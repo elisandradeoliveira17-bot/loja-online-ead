@@ -10,6 +10,7 @@ function calcularTotal (itens) {
 
     // aplica desconto de fidelidade 
     // antes de retornar o valor final
+    // primeira compra 30% de desconto
 
     return total
 }
