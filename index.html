@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página do Produto | Vendas</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Barra Admin / Edição */
+        .admin-bar {
+            background: #0f172a;
+            color: white;
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .admin-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .admin-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Painel de Edição */
+        .edit-panel {
+            display: none;
+            background: #1e293b;
+            color: white;
+            padding: 20px 5%;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .edit-panel.active {
+            display: grid;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .input-group input, .input-group textarea {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Layout do Produto */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .badge {
+            align-self: flex-start;
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .product-title {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .price-tag {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .price-current {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        .price-old {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .product-description {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .btn-buy {
+            background: var(--success);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+        }
+
+        .btn-buy:hover {
+            transform: translateY(-2px);
+            background: #15803d;
+        }
+
+        /* Seção de Benefícios */
+        .features-section {
+            margin-top: 50px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+        }
+
+        .features-section h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .features-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .features-list li {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .product-image img {
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Controle do Administrador -->
+    <div class="admin-bar">
+        <span>Modo Editor de Produto</span>
+        <div>
+            <button class="admin-btn" onclick="toggleEdit()">✏️ Editar Página</button>
+            <button class="admin-btn" style="background: var(--success);" onclick="saveData()">💾 Salvar Alterações</button>
+        </div>
+    </div>
+
+    <!-- Painel de Campos Editáveis -->
+    <div class="edit-panel" id="editPanel">
+        <div class="input-group">
+            <label>URL da Imagem</label>
+            <input type="text" id="inputImage" value="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800">
+        </div>
+        <div class="input-group">
+            <label>Categoria / Categoria Curta</label>
+            <input type="text" id="inputBadge" value="Lançamento Exclusivo">
+        </div>
+        <div class="input-group">
+            <label>Nome do Produto</label>
+            <input type="text" id="inputTitle" value="Fone de Ouvido Bluetooth Premium">
+        </div>
+        <div class="input-group">
+            <label>Preço Atual (R$)</label>
+            <input type="text" id="inputPrice" value="R$ 299,00">
+        </div>
+        <div class="input-group">
+            <label>Preço Antigo (R$)</label>
+            <input type="text" id="inputOldPrice" value="R$ 450,00">
+        </div>
+        <div class="input-group">
+            <label>Descrição Curta</label>
+            <textarea id="inputDesc" rows="3">Aproveite a melhor qualidade de som com cancelamento de ruído ativo e até 30 horas de bateria contínua.</textarea>
+        </div>
+        <div class="input-group">
+            <label>Link do Botão de Comprar (Checkout / WhatsApp)</label>
+            <input type="text" id="inputLink" value="https://wa.me/5500000000000">
+        </div>
+    </div>
+
+    <!-- Conteúdo da Página de Vendas -->
+    <div class="container">
+        <div class="product-grid">
+            <div class="product-image">
+                <img id="displayImg" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800" alt="Produto">
+            </div>
+            <div class="product-details">
+                <span class="badge" id="displayBadge">Lançamento Exclusivo</span>
+                <h1 class="product-title" id="displayTitle">Fone de Ouvido Bluetooth Premium</h1>
+                
+                <div class="price-tag">
+                    <span class="price-current" id="displayPrice">R$ 299,00</span>
+                    <span class="price-old" id="displayOldPrice">R$ 450,00</span>
+                </div>
+
+                <p class="product-description" id="displayDesc">
+                    Aproveite a melhor qualidade de som com cancelamento de ruído ativo e até 30 horas de bateria contínua.
+                </p>
+
+                <a href="https://wa.me/5500000000000" id="displayLink" target="_blank" class="btn-buy">COMPRAR AGORA</a>
+            </div>
+        </div>
+
+        <!-- Destaques / Benefícios -->
+        <div class="features-section">
+            <h2>Por que escolher este produto?</h2>
+            <ul class="features-list">
+                <li>✅ Frete Grátis para todo o Brasil</li>
+                <li>✅ Garantia de 1 ano do fabricante</li>
+                <li>✅ Envio rápido em até 24h</li>
+                <li>✅ Pagamento seguro via PIX ou Cartão</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Alternar visualização do painel de edição
+        function toggleEdit() {
+            const panel = document.getElementById('editPanel');
+            panel.classList.toggle('active');
+        }
+
+        // Atualizar conteúdo dinamicamente conforme a digitação
+        const inputs = [
+            { input: 'inputImage', target: 'displayImg', attr: 'src' },
+            { input: 'inputBadge', target: 'displayBadge' },
+            { input: 'inputTitle', target: 'displayTitle' },
+            { input: 'inputPrice', target: 'displayPrice' },
+            { input: 'inputOldPrice', target: 'displayOldPrice' },
+            { input: 'inputDesc', target: 'displayDesc' },
+            { input: 'inputLink', target: 'displayLink', attr: 'href' }
+        ];
+
+        inputs.forEach(item => {
+            document.getElementById(item.input).addEventListener('input', (e) => {
+                const target = document.getElementById(item.target);
+                if (item.attr) {
+                    target[item.attr] = e.target.value;
+                } else {
+                    target.innerText = e.target.value;
+                }
+            });
+        });
+
+        // Salvar os dados localmente no navegador (LocalStorage)
+        function saveData() {
+            inputs.forEach(item => {
+                const val = document.getElementById(item.input).value;
+                localStorage.setItem(item.input, val);
+            });
+            alert('Alterações salvas com sucesso!');
+        }
+
+        // Carregar dados salvos ao abrir a página
+        window.onload = function() {
+            inputs.forEach(item => {
+                const savedVal = localStorage.getItem(item.input);
+                if (savedVal) {
+                    document.getElementById(item.input).value = savedVal;
+                    const target = document.getElementById(item.target);
+                    if (item.attr) {
+                        target[item.attr] = savedVal;
+                    } else {
+                        target.innerText = savedVal;
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
