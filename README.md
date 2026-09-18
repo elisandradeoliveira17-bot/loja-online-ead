@@ -2,4 +2,4 @@
 
 ## Contato 
 Duvidas: contato@loja.com.br
-Contato Tel: 11 9098-0000 
+Numero Tel:
