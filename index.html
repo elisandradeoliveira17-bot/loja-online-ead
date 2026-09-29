@@ -3,355 +3,464 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página do Produto | Vendas</title>
+    <title>Elis - Marketing & Tecnologia</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --success: #16a34a;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
+            --dark-blue: #0e1b2e;
+            --mid-blue: #2b50aa;
+            --turquoise: #38c1a3;
+            --light-bg: #f8fafc;
+            --text-dark: #1e293b;
             --text-muted: #64748b;
+            --white: #ffffff;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
+            background-color: var(--light-bg);
+            color: var(--text-dark);
             line-height: 1.6;
         }
 
-        /* Barra Admin / Edição */
-        .admin-bar {
-            background: #0f172a;
-            color: white;
-            padding: 12px 5%;
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
-        .admin-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .admin-btn:hover {
-            background: var(--primary-hover);
-        }
-
-        /* Painel de Edição */
-        .edit-panel {
-            display: none;
-            background: #1e293b;
-            color: white;
-            padding: 20px 5%;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .edit-panel.active {
-            display: grid;
-        }
-
-        .input-group {
+        .logo {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
         }
 
-        .input-group label {
-            font-size: 0.85rem;
-            color: #94a3b8;
+        .logo-icon {
+            display: flex;
+            gap: 4px;
+            align-items: flex-end;
+            height: 28px;
         }
 
-        .input-group input, .input-group textarea {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: white;
+        .logo-bar {
+            width: 6px;
+            border-radius: 3px;
+            transform: skewX(-15deg);
         }
 
-        /* Container Principal */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .bar-1 { height: 18px; background-color: var(--dark-blue); }
+        .bar-2 { height: 23px; background-color: var(--mid-blue); }
+        .bar-3 { height: 28px; background-color: var(--turquoise); }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--dark-blue);
+            letter-spacing: -0.5px;
         }
 
-        /* Layout do Produto */
-        .product-grid {
+        /* Hero / Produto */
+        .hero {
+            padding: 9rem 2rem 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            gap: 4rem;
+            align-items: center;
         }
 
-        .product-image img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        .product-details {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .badge {
-            align-self: flex-start;
-            background: #dbeafe;
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .product-title {
-            font-size: 2.2rem;
-            margin-bottom: 12px;
+        .hero-title {
+            font-size: 2.8rem;
+            color: var(--dark-blue);
             line-height: 1.2;
+            margin-bottom: 1rem;
         }
 
-        .price-tag {
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-            margin-bottom: 20px;
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
         }
 
-        .price-current {
-            font-size: 2rem;
+        .price-box {
+            background-color: #e6f7f3;
+            border-left: 4px solid var(--turquoise);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .price-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .price-value {
+            font-size: 2.5rem;
             font-weight: 800;
-            color: var(--success);
-        }
-
-        .price-old {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            text-decoration: line-through;
-        }
-
-        .product-description {
-            color: var(--text-muted);
-            margin-bottom: 24px;
+            color: var(--dark-blue);
         }
 
         .btn-buy {
-            background: var(--success);
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            padding: 16px;
+            background-color: var(--turquoise);
+            color: var(--white);
+            padding: 1rem 2.5rem;
             border-radius: 8px;
+            border: none;
             font-size: 1.2rem;
             font-weight: 700;
-            transition: 0.2s;
-            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            display: inline-block;
+            box-shadow: 0 4px 14px rgba(56, 193, 163, 0.4);
         }
 
         .btn-buy:hover {
+            background-color: #2eb092;
             transform: translateY(-2px);
-            background: #15803d;
         }
 
-        /* Seção de Benefícios */
-        .features-section {
-            margin-top: 50px;
-            background: var(--card-bg);
-            padding: 40px;
+        .product-card {
+            background: linear-gradient(135deg, var(--dark-blue), var(--mid-blue));
             border-radius: 16px;
+            padding: 3rem;
+            color: var(--white);
+            box-shadow: 0 20px 40px rgba(14, 27, 46, 0.15);
         }
 
-        .features-section h2 {
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-
-        .features-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-        }
-
-        .features-list li {
-            background: var(--bg);
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 500;
-            display: flex;
+        /* Modal / Pop-up de Compra */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .price-summary {
+            background-color: #f1f5f9;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .coupon-message {
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--turquoise);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #25D366; /* Cor do WhatsApp */
+            color: var(--white);
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            background-color: #1eb956;
+        }
+
+        footer {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 5rem;
+            font-size: 0.9rem;
         }
 
         @media (max-width: 768px) {
-            .product-grid {
+            .hero {
                 grid-template-columns: 1fr;
-            }
-            .product-image img {
-                height: 280px;
+                padding-top: 7rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Barra de Controle do Administrador -->
-    <div class="admin-bar">
-        <span>Modo Editor de Produto</span>
-        <div>
-            <button class="admin-btn" onclick="toggleEdit()">✏️ Editar Página</button>
-            <button class="admin-btn" style="background: var(--success);" onclick="saveData()">💾 Salvar Alterações</button>
-        </div>
-    </div>
-
-    <!-- Painel de Campos Editáveis -->
-    <div class="edit-panel" id="editPanel">
-        <div class="input-group">
-            <label>URL da Imagem</label>
-            <input type="text" id="inputImage" value="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800">
-        </div>
-        <div class="input-group">
-            <label>Categoria / Categoria Curta</label>
-            <input type="text" id="inputBadge" value="Lançamento Exclusivo">
-        </div>
-        <div class="input-group">
-            <label>Nome do Produto</label>
-            <input type="text" id="inputTitle" value="Fone de Ouvido Bluetooth Premium">
-        </div>
-        <div class="input-group">
-            <label>Preço Atual (R$)</label>
-            <input type="text" id="inputPrice" value="R$ 299,00">
-        </div>
-        <div class="input-group">
-            <label>Preço Antigo (R$)</label>
-            <input type="text" id="inputOldPrice" value="R$ 450,00">
-        </div>
-        <div class="input-group">
-            <label>Descrição Curta</label>
-            <textarea id="inputDesc" rows="3">Aproveite a melhor qualidade de som com cancelamento de ruído ativo e até 30 horas de bateria contínua.</textarea>
-        </div>
-        <div class="input-group">
-            <label>Link do Botão de Comprar (Checkout / WhatsApp)</label>
-            <input type="text" id="inputLink" value="https://wa.me/5500000000000">
-        </div>
-    </div>
-
-    <!-- Conteúdo da Página de Vendas -->
-    <div class="container">
-        <div class="product-grid">
-            <div class="product-image">
-                <img id="displayImg" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800" alt="Produto">
-            </div>
-            <div class="product-details">
-                <span class="badge" id="displayBadge">Lançamento Exclusivo</span>
-                <h1 class="product-title" id="displayTitle">Fone de Ouvido Bluetooth Premium</h1>
-                
-                <div class="price-tag">
-                    <span class="price-current" id="displayPrice">R$ 299,00</span>
-                    <span class="price-old" id="displayOldPrice">R$ 450,00</span>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <div class="logo-bar bar-1"></div>
+                    <div class="logo-bar bar-2"></div>
+                    <div class="logo-bar bar-3"></div>
                 </div>
+                <span class="logo-text">elis</span>
+            </a>
+        </nav>
+    </header>
 
-                <p class="product-description" id="displayDesc">
-                    Aproveite a melhor qualidade de som com cancelamento de ruído ativo e até 30 horas de bateria contínua.
-                </p>
-
-                <a href="https://wa.me/5500000000000" id="displayLink" target="_blank" class="btn-buy">COMPRAR AGORA</a>
+    <!-- Conteúdo Principal / Produto -->
+    <section class="hero">
+        <div>
+            <h1 class="hero-title">Solução Completa Elis</h1>
+            <p class="hero-subtitle">Transforme o seu negócio com as nossas soluções de Marketing e Tecnologia personalizadas para alavancar os seus resultados.</p>
+            
+            <div class="price-box">
+                <div class="price-label">Investimento único</div>
+                <div class="price-value">R$ 119,70</div>
             </div>
+
+            <br>
+            <button class="btn-buy" onclick="openModal()">Comprar Agora</button>
         </div>
 
-        <!-- Destaques / Benefícios -->
-        <div class="features-section">
-            <h2>Por que escolher este produto?</h2>
-            <ul class="features-list">
-                <li>✅ Frete Grátis para todo o Brasil</li>
-                <li>✅ Garantia de 1 ano do fabricante</li>
-                <li>✅ Envio rápido em até 24h</li>
-                <li>✅ Pagamento seguro via PIX ou Cartão</li>
+        <div class="product-card">
+            <h2>O que está incluído:</h2>
+            <ul style="margin-top: 1.5rem; padding-left: 1.2rem; line-height: 2;">
+                <li>Consultoria de Marketing e Tecnologia</li>
+                <li>Análise de Presença Digital</li>
+                <li>Estratégia de Aquisição de Clientes</li>
+                <li>Suporte Dedicado via WhatsApp</li>
             </ul>
         </div>
+    </section>
+
+    <!-- Pop-up de Checkout / Formulário -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title">Dados para Pedido</h2>
+            
+            <div class="price-summary">
+                <div>Produto: <strong>Solução Elis</strong></div>
+                <div>Valor original: <s>R$ 119,70</s></div>
+                <div id="displayDesconto" style="color: var(--turquoise); font-weight: 600; display: none;"></div>
+                <div style="font-size: 1.2rem; margin-top: 4px;">Total: <strong id="displayTotal" style="color: var(--dark-blue);">R$ 119,70</strong></div>
+            </div>
+
+            <form id="orderForm" onsubmit="sendToWhatsApp(event)">
+                <div class="form-group">
+                    <label for="cupom">Cupom de Desconto</label>
+                    <input type="text" id="cupom" placeholder="Digite seu cupom" oninput="autoApplyCoupon()" style="text-transform: lowercase;">
+                    <div id="couponMsg" class="coupon-message"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nome">Nome Completo *</label>
+                    <input type="text" id="nome" required placeholder="Seu nome">
+                </div>
+
+                <div class="form-group">
+                    <label for="loja">Nome da Loja / Empresa *</label>
+                    <input type="text" id="loja" required placeholder="Nome do seu negócio">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail *</label>
+                    <input type="email" id="email" required placeholder="seuemail@exemplo.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Número de Telefone (WhatsApp) *</label>
+                    <input type="tel" id="telefone" required placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço Completo *</label>
+                    <input type="text" id="endereco" required placeholder="Rua, número, bairro, cidade">
+                </div>
+
+                <button type="submit" class="btn-submit">Próximo (Finalizar no WhatsApp)</button>
+            </form>
+        </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Elis - Marketing & Tecnologia. Todos os direitos reservados.</p>
+    </footer>
+
     <script>
-        // Alternar visualização do painel de edição
-        function toggleEdit() {
-            const panel = document.getElementById('editPanel');
-            panel.classList.toggle('active');
+        const originalPrice = 119.70;
+        let currentDiscountPercent = 0;
+        let appliedCouponCode = "";
+
+        function openModal() {
+            document.getElementById('checkoutModal').style.display = 'flex';
         }
 
-        // Atualizar conteúdo dinamicamente conforme a digitação
-        const inputs = [
-            { input: 'inputImage', target: 'displayImg', attr: 'src' },
-            { input: 'inputBadge', target: 'displayBadge' },
-            { input: 'inputTitle', target: 'displayTitle' },
-            { input: 'inputPrice', target: 'displayPrice' },
-            { input: 'inputOldPrice', target: 'displayOldPrice' },
-            { input: 'inputDesc', target: 'displayDesc' },
-            { input: 'inputLink', target: 'displayLink', attr: 'href' }
-        ];
-
-        inputs.forEach(item => {
-            document.getElementById(item.input).addEventListener('input', (e) => {
-                const target = document.getElementById(item.target);
-                if (item.attr) {
-                    target[item.attr] = e.target.value;
-                } else {
-                    target.innerText = e.target.value;
-                }
-            });
-        });
-
-        // Salvar os dados localmente no navegador (LocalStorage)
-        function saveData() {
-            inputs.forEach(item => {
-                const val = document.getElementById(item.input).value;
-                localStorage.setItem(item.input, val);
-            });
-            alert('Alterações salvas com sucesso!');
+        function closeModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
         }
 
-        // Carregar dados salvos ao abrir a página
-        window.onload = function() {
-            inputs.forEach(item => {
-                const savedVal = localStorage.getItem(item.input);
-                if (savedVal) {
-                    document.getElementById(item.input).value = savedVal;
-                    const target = document.getElementById(item.target);
-                    if (item.attr) {
-                        target[item.attr] = savedVal;
-                    } else {
-                        target.innerText = savedVal;
-                    }
-                }
-            });
+        window.onclick = function(event) {
+            const modal = document.getElementById('checkoutModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        function autoApplyCoupon() {
+            const couponInput = document.getElementById('cupom').value.trim().toLowerCase();
+            const msgElement = document.getElementById('couponMsg');
+            const descontoElement = document.getElementById('displayDesconto');
+            const totalElement = document.getElementById('displayTotal');
+
+            if (couponInput === 'indicado') {
+                currentDiscountPercent = 7;
+                appliedCouponCode = 'INDICADO (7%)';
+                msgElement.style.color = '#10b981';
+                msgElement.innerText = 'Cupom de 7% aplicado!';
+            } else if (couponInput === 'presencial') {
+                currentDiscountPercent = 20;
+                appliedCouponCode = 'PRESENCIAL (20%)';
+                msgElement.style.color = '#10b981';
+                msgElement.innerText = 'Cupom de 20% aplicado!';
+            } else if (couponInput === '') {
+                currentDiscountPercent = 0;
+                appliedCouponCode = '';
+                msgElement.innerText = '';
+                descontoElement.style.display = 'none';
+                totalElement.innerText = `R$ ${originalPrice.toFixed(2).replace('.', ',')}`;
+                return;
+            } else {
+                currentDiscountPercent = 0;
+                appliedCouponCode = '';
+                msgElement.style.color = '#ef4444';
+                msgElement.innerText = 'Cupom inválido';
+                descontoElement.style.display = 'none';
+                totalElement.innerText = `R$ ${originalPrice.toFixed(2).replace('.', ',')}`;
+                return;
+            }
+
+            const discountValue = originalPrice * (currentDiscountPercent / 100);
+            const finalPrice = originalPrice - discountValue;
+
+            descontoElement.style.display = 'block';
+            descontoElement.innerText = `Desconto (${currentDiscountPercent}%): - R$ ${discountValue.toFixed(2).replace('.', ',')}`;
+            totalElement.innerText = `R$ ${finalPrice.toFixed(2).replace('.', ',')}`;
+        }
+
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const loja = document.getElementById('loja').value;
+            const email = document.getElementById('email').value;
+            const telefone = document.getElementById('telefone').value;
+            const endereco = document.getElementById('endereco').value;
+
+            const phone = "5547992651529";
+
+            const discountValue = originalPrice * (currentDiscountPercent / 100);
+            const finalPrice = originalPrice - discountValue;
+
+            let cupomInfo = "Nenhum";
+            if (appliedCouponCode !== "") {
+                cupomInfo = `${appliedCouponCode} (-R$ ${discountValue.toFixed(2).replace('.', ',')})`;
+            }
+
+            const message = [
+                '*NOVO PEDIDO - ELIS MARKETING & TECNOLOGIA*',
+                '',
+                '*Produto:* Solução Elis',
+                `*Valor Original:* R$ ${originalPrice.toFixed(2).replace('.', ',')}`,
+                `*Cupom Aplicado:* ${cupomInfo}`,
+                `*Valor Final:* R$ ${finalPrice.toFixed(2).replace('.', ',')}`,
+                '',
+                `*Nome:* ${nome}`,
+                `*Nome da Loja:* ${loja}`,
+                `*E-mail:* ${email}`,
+                `*Telefone:* ${telefone}`,
+                `*Endereço:* ${endereco}`
+            ].join('\n');
+
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
         }
     </script>
 </body>
